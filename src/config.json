@@ -1,0 +1,16 @@
+{
+    "isRun": true,
+    "loggerEvent": {
+        "playerAttack": true,
+        "entityDie": true,
+        "blockInteractedWith": true,
+        "itemUseOnBlock": true,
+        "itemThrow": true,
+        "getElytra": true,
+        "lightningHitBlock": true,
+        "blockPlace": true,
+        "blockDestroy": true,
+        "blockContainer": true,
+        "signBlockPlace": true
+    }
+}
