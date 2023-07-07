@@ -32,12 +32,11 @@ import * as nt from "./nameTo";
 
 class events2emitDataClass {
     loggerEvent: {
-        [key: string]: Boolean
+        [key:string]: Boolean
     }
     deathEntities: Map<string, [number, edt.playerAttack]>
     containerData: Map<networkidentifier_1.NetworkIdentifier, BlockPos>;
-    logviewer: Map<string, ("blockcontainer" | "blockdestroy" | "blockplace" | "blockinteractedwith" | "signblockplace" | "all")>;
-    //TODO constructor
+    logviewer: Map<string, ("blockcontainer" | "blockdestroy" | "blockplace" | "blockinteractedwith" | "signblockplace" | "all")>
     constructor() {
         this.deathEntities = new Map();
         this.containerData = new Map();
@@ -58,8 +57,7 @@ class events2emitDataClass {
         events.blockPlace.on(ev => this.blockPlace(ev));//blockPlace
         events.blockDestroy.on(ev => this.blockDestroy(ev));//blockDestroy
         events.playerJoin.on(ev => this.playerJoin(ev));//logviewer delete
-
-        prochacker_1.procHacker.hooking('?_onItemChanged@LevelContainerModel@@MEAAXHAEBVItemStack@@0@Z', void_t, null, core_1.StaticPointer, nativetype_1.int32_t, inventory_1.ItemStack, inventory_1.ItemStack)(this.blockContainer);//blockContainer
+        this.blockContainer();//blockContainer
         this.frameAttack();
         events.packetSend(packetids_1.MinecraftPacketIds.ContainerOpen).on((pk, ni) => {//blockContainer
             if (inventory_1.ContainerType[pk.type] == undefined) return;
@@ -279,92 +277,98 @@ class events2emitDataClass {
             return itemFrameBlock$attack.call(this, player, blockpos);
         }
     };
-    //TODO blockcibtainer
-    blockContainer(thiz: core_1.StaticPointer, slot: number, oldItem: inventory_1.ItemStack, newItem: inventory_1.ItemStack) {
+    blockContainer() {
         const checkLoggerEvent = (): Boolean => { return this.loggerEvent["blockContainer"] };
-        if (!checkLoggerEvent) return;
-        const pl = player_1.ServerPlayer.ref()[nativetype_1.NativeType.getter](thiz, 208);
-        if (!Boolean(pl.hasOpenContainer())) {
-            return
-            //console.error(`[log-yan]Error: no data on the opening of this container.(player:${pl.getNameTag()},vicinity:${pl.getPosition().x}/${pl.getPosition().y}/${pl.getPosition().z})`)
-        };
-        const blockpos = this.containerData.get(pl.getNetworkIdentifier());
-        if (blockpos === undefined) return;
-        const block = pl.getRegion().getBlock(blockpos);
-        if (oldItem.amount === 0 && newItem.amount > 0) {//air => item
-            var emitData: edt.blockContainer = {
-                blockType: block.getName().replace("minecraft:", ""),
-                action: "add",
-                itemId: newItem.getName(),
-                itemAmount: newItem.amount,
-                slot: slot,
-                playerName: pl.getName(),
-                pos: blockpos,
-                dimensionId: pl.getDimensionId()
-            };
-            edq.blockContainer(emitData);
-        } else if (oldItem.amount > 0 && newItem.amount === 0) {//item => air
-            var emitData: edt.blockContainer = {
-                blockType: block.getName().replace("minecraft:", ""),
-                action: "remove",
-                itemId: oldItem.getName(),
-                itemAmount: oldItem.amount,
-                slot: slot,
-                playerName: pl.getName(),
-                pos: blockpos,
-                dimensionId: pl.getDimensionId()
-            };
-            edq.blockContainer(emitData);
-        } else if (oldItem.item.equalsptr(newItem.item)) {//Same item
-            if (oldItem.amount > newItem.amount) {//remove
-                var emitData: edt.blockContainer = {
-                    blockType: block.getName().replace("minecraft:", ""),
-                    action: "remove",
-                    itemId: oldItem.getName(),
-                    itemAmount: oldItem.amount - newItem.amount,
-                    slot: slot,
-                    playerName: pl.getName(),
-                    pos: blockpos,
-                    dimensionId: pl.getDimensionId()
+        const levelContainerModel$onItemChanged = prochacker_1.procHacker.hooking('?_onItemChanged@LevelContainerModel@@MEAAXHAEBVItemStack@@0@Z',
+            nativetype_1.void_t, null, core_1.StaticPointer, nativetype_1.int32_t, inventory_1.ItemStack, inventory_1.ItemStack)
+            ((thiz, slot, oldItem, newItem) => {
+                if (!checkLoggerEvent) return levelContainerModel$onItemChanged(thiz, slot, oldItem, newItem);
+                const pl = player_1.ServerPlayer.ref()[nativetype_1.NativeType.getter](thiz, 208);
+                if (!Boolean(pl.hasOpenContainer())) {
+                    return
+                    //console.error(`[log-yan]Error: no data on the opening of this container.(player:${pl.getNameTag()},vicinity:${pl.getPosition().x}/${pl.getPosition().y}/${pl.getPosition().z})`)
                 };
-                edq.blockContainer(emitData);
-            } else {//add
-                var emitData: edt.blockContainer = {
-                    blockType: block.getName().replace("minecraft:", ""),
-                    action: "add",
-                    itemId: newItem.getName(),
-                    itemAmount: newItem.amount - oldItem.amount,
-                    slot: slot,
-                    playerName: pl.getName(),
-                    pos: blockpos,
-                    dimensionId: pl.getDimensionId()
+                const blockpos = this.containerData.get(pl.getNetworkIdentifier());
+                if (blockpos === undefined) return;
+                const block = pl.getRegion().getBlock(blockpos);
+                if (oldItem.amount === 0 && newItem.amount > 0) {//air => item
+                    var emitData: edt.blockContainer = {
+                        blockType: block.getName().replace("minecraft:", ""),
+                        action: "add",
+                        itemId: newItem.getName(),
+                        itemAmount: newItem.amount,
+                        slot: slot,
+                        playerName: pl.getName(),
+                        pos: blockpos,
+                        dimensionId: pl.getDimensionId()
+                    };
+                    edq.blockContainer(emitData);
+                } else if (oldItem.amount > 0 && newItem.amount === 0) {//item => air
+                    var emitData: edt.blockContainer = {
+                        blockType: block.getName().replace("minecraft:", ""),
+                        action: "remove",
+                        itemId: oldItem.getName(),
+                        itemAmount: oldItem.amount,
+                        slot: slot,
+                        playerName: pl.getName(),
+                        pos: blockpos,
+                        dimensionId: pl.getDimensionId()
+                    };
+                    edq.blockContainer(emitData);
+                } else if (oldItem.item.equalsptr(newItem.item)) {//Same item
+                    if (oldItem.amount > newItem.amount) {//remove
+                        var emitData: edt.blockContainer = {
+                            blockType: block.getName().replace("minecraft:", ""),
+                            action: "remove",
+                            itemId: oldItem.getName(),
+                            itemAmount: oldItem.amount - newItem.amount,
+                            slot: slot,
+                            playerName: pl.getName(),
+                            pos: blockpos,
+                            dimensionId: pl.getDimensionId()
+                        };
+                        edq.blockContainer(emitData);
+                    } else {//add
+                        var emitData: edt.blockContainer = {
+                            blockType: block.getName().replace("minecraft:", ""),
+                            action: "add",
+                            itemId: newItem.getName(),
+                            itemAmount: newItem.amount - oldItem.amount,
+                            slot: slot,
+                            playerName: pl.getName(),
+                            pos: blockpos,
+                            dimensionId: pl.getDimensionId()
+                        };
+                        edq.blockContainer(emitData);
+                    }
+                } else {// itemA => itemB
+                    var emitData: edt.blockContainer = {
+                        blockType: block.getName().replace("minecraft:", ""),
+                        action: "remove",
+                        itemId: oldItem.getName(),
+                        itemAmount: oldItem.amount,
+                        slot: slot,
+                        playerName: pl.getName(),
+                        pos: blockpos,
+                        dimensionId: pl.getDimensionId()
+                    };
+                    edq.blockContainer(emitData);
+                    var emitData: edt.blockContainer = {
+                        blockType: block.getName().replace("minecraft:", ""),
+                        action: "add",
+                        itemId: newItem.getName(),
+                        itemAmount: newItem.amount,
+                        slot: slot,
+                        playerName: pl.getName(),
+                        pos: blockpos,
+                        dimensionId: pl.getDimensionId()
+                    };
+                    edq.blockContainer(emitData);
                 };
-                edq.blockContainer(emitData);
-            }
-        } else {// itemA => itemB
-            var emitData: edt.blockContainer = {
-                blockType: block.getName().replace("minecraft:", ""),
-                action: "remove",
-                itemId: oldItem.getName(),
-                itemAmount: oldItem.amount,
-                slot: slot,
-                playerName: pl.getName(),
-                pos: blockpos,
-                dimensionId: pl.getDimensionId()
-            };
-            edq.blockContainer(emitData);
-            var emitData: edt.blockContainer = {
-                blockType: block.getName().replace("minecraft:", ""),
-                action: "add",
-                itemId: newItem.getName(),
-                itemAmount: newItem.amount,
-                slot: slot,
-                playerName: pl.getName(),
-                pos: blockpos,
-                dimensionId: pl.getDimensionId()
-            };
-            edq.blockContainer(emitData);
-        };
+
+
+            });
+
     };
     itemUseOnBlock(ev: entityEvent_1.ItemUseOnBlockEvent) {
         if (!this.loggerEvent["itemUseOnBlock"]) return;
