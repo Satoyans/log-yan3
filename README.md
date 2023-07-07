@@ -1,4 +1,3 @@
-<div style="text-align:center"></div>
 
 # log-yan
 

@@ -93,6 +93,7 @@ class searchDataQueryClass {
                 playerName: data.playerName,
                 text:data.text,
                 id:data.id,
+                side:data.side,
                 x: data.x,
                 y: data.y,
                 z: data.z,

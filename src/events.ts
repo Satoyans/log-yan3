@@ -1,50 +1,38 @@
+//bds modules
 import { ActorDamageCause, ActorType, DimensionId } from "bdsx/bds/actor";
-import * as core_1 from "bdsx/core";
-import * as nativetype_1 from "bdsx/nativetype";
-import * as prochacker_1 from "bdsx/prochacker";
 import * as inventory_1 from "bdsx/bds/inventory";
 import * as packetids_1 from "bdsx/bds/packetids";
 import * as player_1 from "bdsx/bds/player";
 import * as form_1 from "bdsx/bds/form";
-import * as common_1 from "bdsx/common";
 import * as networkidentifier_1 from "bdsx/bds/networkidentifier";
-import * as command_1 from "bdsx/command";
 import * as command_2 from "bdsx/bds/command";
+import { BlockPos, Vec3 } from "bdsx/bds/blockpos";
+import { BlockActor, BlockSource } from "bdsx/bds/block";
+import { CompoundTag, StringTag, ByteTag, NBT } from "bdsx/bds/nbt";
+import { Player } from "bdsx/bds/player";
+//bdsx modules
+import * as core_1 from "bdsx/core";
+import * as nativetype_1 from "bdsx/nativetype";
+import * as prochacker_1 from "bdsx/prochacker";
+import * as common_1 from "bdsx/common";
+import * as command_1 from "bdsx/command";
 import * as blockEvent_1 from "bdsx/event_impl/blockevent";
 import * as entityEvent_1 from "bdsx/event_impl/entityevent";
 import { events } from "bdsx/event";
-import { BlockPos, Vec3 } from "bdsx/bds/blockpos";
-import { BlockLegacy } from "bdsx/bds/block";
 import { bedrockServer } from "bdsx/launcher";
-
+import { void_t } from "bdsx/nativetype";
+//node_modules
 import * as fs from "fs";
 import * as path from "path";
 import * as mysql from 'mysql';
-
+//my modules
 import { edt, sdt } from "./types";
 import { edq, sdq } from "./query_functions";
 import * as nt from "./nameTo";
 
-import { BlockActor, BlockSource } from "bdsx/bds/block";
-import { CompoundTag, StringTag, ByteTag, NBT } from "bdsx/bds/nbt";
-import { Player } from "bdsx/bds/player";
-import { UNDNAME_NAME_ONLY } from "bdsx/dbghelp";
-import { void_t } from "bdsx/nativetype";
-import { ProcHacker } from "bdsx/prochacker";
-import { nameToNi, nameToPlayer, xuToName } from "./nameTo";
 class events2emitDataClass {
     loggerEvent: {
-        playerAttack: Boolean,
-        entityDie: Boolean,
-        blockInteractedWith: Boolean,
-        itemUseOnBlock: Boolean,
-        itemThrow: Boolean,
-        getElytra: Boolean,
-        lightningHitBlock: Boolean,
-        blockPlace: Boolean,
-        blockDestroy: Boolean,
-        blockContainer: Boolean,
-        signBlockPlace: Boolean
+        [key:string]: Boolean
     }
     deathEntities: Map<string, [number, edt.playerAttack]>
     containerData: Map<networkidentifier_1.NetworkIdentifier, BlockPos>;
@@ -53,7 +41,6 @@ class events2emitDataClass {
         this.deathEntities = new Map();
         this.containerData = new Map();
         this.logviewer = new Map();
-        this.loggerEvent
 
         this.commandRegister();
         this.commandFunc();
@@ -77,7 +64,7 @@ class events2emitDataClass {
             this.containerData.set(ni, BlockPos.create(pk.pos));
         });
         this.signBlockPlace();//signBlockPlace
-        console.log("[logyan]".yellow,"log-yan has been started".blue);
+        console.log("[logyan] log-yan has been started");
     }
     commandRegister() {
         command_1.command.register("log-yan", "log-yan setting command.", command_2.CommandPermissionLevel.Operator)
@@ -101,7 +88,7 @@ class events2emitDataClass {
             .overload((params, origin, output) => {
             }, {
                 select: command_1.command.enum("log-yan.select2", "setting"),
-                mode: [command_1.command.enum("log-yan.setting", "on", "off", "reload"), {
+                mode: [command_1.command.enum("log-yan.setting", "logging_start", "logging_stop", "reload"), {
                     optional: false,
                     options: command_2.CommandParameterOption.EnumAutocompleteExpansion,
                 }]
@@ -270,31 +257,32 @@ class events2emitDataClass {
         };
         edq.blockInteractedWith(emitData);
     };
+
     frameAttack() {
-        const checkLoggerEvent = ():Boolean=>{return this.loggerEvent["blockInteractedWith"]};
+        const checkLoggerEvent = (): Boolean => { return this.loggerEvent["blockInteractedWith"] };
         const itemFrameBlock$attack = prochacker_1.procHacker.hooking("?attack@ItemFrameBlock@@UEBA_NPEAVPlayer@@AEBVBlockPos@@@Z",
-        nativetype_1.bool_t,{this:BlockActor},Player,BlockPos)(onChangeItenFrameBlockAttack);
-        function onChangeItenFrameBlockAttack(this:BlockActor,player:Player,blockpos:BlockPos){
-                if (!checkLoggerEvent) return itemFrameBlock$attack.call(this,player,blockpos);
-                let region = player.getRegion();
-                let block = region.getBlock(blockpos);
-                let emitData: edt.blockInteractedWith = {
-                    playerName: player.getName(),
-                    blockName: block.getName(),
-                    blockData: block.blockLegacy.getBlockItemId(),
-                    pos: blockpos,
-                    dimensionId: player.getDimensionId()
-                };
-                edq.blockInteractedWith(emitData);
-                return itemFrameBlock$attack.call(this,player,blockpos);
-            }
+            nativetype_1.bool_t, { this: BlockActor }, Player, BlockPos)(onChangeItenFrameBlockAttack);
+        function onChangeItenFrameBlockAttack(this: BlockActor, player: Player, blockpos: BlockPos) {
+            if (!checkLoggerEvent) return itemFrameBlock$attack.call(this, player, blockpos);
+            let region = player.getRegion();
+            let block = region.getBlock(blockpos);
+            let emitData: edt.blockInteractedWith = {
+                playerName: player.getName(),
+                blockName: block.getName(),
+                blockData: block.blockLegacy.getBlockItemId(),
+                pos: blockpos,
+                dimensionId: player.getDimensionId()
+            };
+            edq.blockInteractedWith(emitData);
+            return itemFrameBlock$attack.call(this, player, blockpos);
+        }
     };
     blockContainer() {
-        const checkLoggerEvent = ():Boolean=>{return this.loggerEvent["blockContainer"]};
+        const checkLoggerEvent = (): Boolean => { return this.loggerEvent["blockContainer"] };
         const levelContainerModel$onItemChanged = prochacker_1.procHacker.hooking('?_onItemChanged@LevelContainerModel@@MEAAXHAEBVItemStack@@0@Z',
             nativetype_1.void_t, null, core_1.StaticPointer, nativetype_1.int32_t, inventory_1.ItemStack, inventory_1.ItemStack)
             ((thiz, slot, oldItem, newItem) => {
-                if (!checkLoggerEvent) return levelContainerModel$onItemChanged(thiz,slot,oldItem,newItem);
+                if (!checkLoggerEvent) return levelContainerModel$onItemChanged(thiz, slot, oldItem, newItem);
                 const pl = player_1.ServerPlayer.ref()[nativetype_1.NativeType.getter](thiz, 208);
                 if (!Boolean(pl.hasOpenContainer())) {
                     return
@@ -486,31 +474,47 @@ class events2emitDataClass {
         edq.getElytra(emitData);
     }
     signBlockPlace() {
-        const checkLoggerEvent = ():Boolean=>{return this.loggerEvent["signBlockPlace"]};
+        const checkLoggerEvent = (): Boolean => { return this.loggerEvent["signBlockPlace"] };
         function signBlockActor$onUpdatePacket(blockActor: BlockActor, tag: CompoundTag, source: BlockSource) {
-            if (!checkLoggerEvent())return signBlockActor$onUpdatePacket_(blockActor,tag,source);
-            const savedTag = tag.value();
-            if (savedTag.FrontText.Text === undefined)return;
-            //if (xuToName.get((savedTag.FrontText as string)) !== undefined) {
-            //TextOwnerがbackText,FrontText共に空白になっているためplayerNameを空でログを取る
-            //試験的な実装から外れたら治ると思うからその時に直す
-            if (true){
-                //let player = nameToPlayer.get(xuToName.get((savedTag.FrontText.TextOwner as string))!)!;
-                let emitData: edt.signBlockPlace = {
-                    pos: Vec3.create((savedTag.x as NBT.Int).value,(savedTag.y as NBT.Int).value, (savedTag.z as NBT.Int).value),
-                    //playerName: player.getNameTag(),
-                    playerName:"",
-                    id: (savedTag.id as string),
-                    text: savedTag.FrontText.Text,
-                    //dimensionId: player.getDimensionId()
-                    dimensionId:DimensionId.Undefined
-                }
-                edq.signBlockPlace(emitData);
-            }
-
+            log(blockActor);
             return signBlockActor$onUpdatePacket_(blockActor, tag, source);
         };
+        function log(blockActor: BlockActor) {
+            if (!checkLoggerEvent()) return;
+            var before = blockActor.save();
+            var after;
+            setTimeout((blockactor_) => {
+                const savedTag = blockactor_.save();
+                after = savedTag;
+                if (before["BackText"]["Text"] !== after["BackText"]["Text"] ||
+                    before["BackText"]["TextOwner"] !== after["BackText"]["TextOwner"]) {//裏面が編集された
+                    let name = nt.xuToName.get(after["BackText"]["TextOwner"]);
+                    let emitData: edt.signBlockPlace = {
+                        pos: Vec3.create((savedTag.x as NBT.Int).value, (savedTag.y as NBT.Int).value, (savedTag.z as NBT.Int).value),
+                        playerName: Boolean(name === undefined) ? "undefined" : (name as string),
+                        id: (after.id as string),
+                        side: "BackText",
+                        text: after["BackText"]["Text"],
+                        dimensionId: Boolean(name === undefined) ? DimensionId.Undefined : (nt.nameToPlayer.get(name!) as Player).getDimensionId()
+                    }
+                    edq.signBlockPlace(emitData);
+                }
 
+                if (before["FrontText"]["Text"] !== after["FrontText"]["Text"] ||
+                    before["FrontText"]["TextOwner"] !== after["FrontText"]["TextOwner"]) {//表面が編集された
+                    let name = nt.xuToName.get(after["FrontText"]["TextOwner"]);
+                    let emitData: edt.signBlockPlace = {
+                        pos: Vec3.create((savedTag.x as NBT.Int).value, (savedTag.y as NBT.Int).value, (savedTag.z as NBT.Int).value),
+                        playerName: Boolean(name === undefined) ? "undefined" : (name as string),
+                        id: (after.id as string),
+                        side: "FrontText",
+                        text: after["FrontText"]["Text"],
+                        dimensionId: Boolean(name === undefined) ? DimensionId.Undefined : (nt.nameToPlayer.get(name!) as Player).getDimensionId()
+                    }
+                    edq.signBlockPlace(emitData);
+                }
+            }, 100, blockActor);
+        }
         const signBlockActor$onUpdatePacket_ = prochacker_1.procHacker.hooking("?_onUpdatePacket@SignBlockActor@@MEAAXAEBVCompoundTag@@AEAVBlockSource@@@Z", void_t, null, BlockActor, CompoundTag, BlockSource)(signBlockActor$onUpdatePacket);
     }
 };
@@ -550,7 +554,7 @@ class commandLogSearchClass {
                     break;
             }
             let form = this.makeForm(logs, pos);
-            form.sendTo(nameToNi.get(playerName)!);
+            form.sendTo(nt.nameToNi.get(playerName)!);
         }
     }
     static makeForm(logs: (sdt.blockContainer | sdt.blockInteractedWith | sdt.blockDestroy | sdt.blockPlace | sdt.signBlockPlace)[], pos: common_1.VectorXYZ) {

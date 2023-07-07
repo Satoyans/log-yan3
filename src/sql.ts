@@ -1,10 +1,10 @@
 import { events } from 'bdsx/event';
 import * as mysql from 'mysql';
 import {config} from "dotenv";
-import * as path from 'path';
-const ENV_PATH = path.join(__dirname, '.env');
-config({path:ENV_PATH});
-const connection = mysql.createConnection({///env
+import * as path from "path";
+config({path:path.join(__dirname,".env")});
+
+const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: process.env.SQL_PASSWORD,

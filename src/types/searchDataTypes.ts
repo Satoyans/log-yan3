@@ -87,6 +87,7 @@ type signBlockPlace = {
     time:any
     playerName:any
     id:any
+    side:any
     text:any
     x:any
     y:any

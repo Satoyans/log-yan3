@@ -128,12 +128,13 @@ class emitDataQueryClass{
         const x = Math.ceil(pos.x);
         const y = Math.ceil(pos.y);
         const z = Math.ceil(pos.z);
+        const side = emitData.side;
         const playerName = emitData.playerName;
         const dimensionId = DimensionId[emitData.dimensionId];
         const text = emitData.text;
         const id = emitData.id;
         query(`INSERT IGNORE INTO ${edt.queryText.signBlockPlace} `+
-        `VALUES("${timestamp}","${playerName}","${id}","${text}","${x}","${y}","${z}","${dimensionId}")`);
+        `VALUES("${timestamp}","${playerName}","${id}","${side}","${text}","${x}","${y}","${z}","${dimensionId}")`);
     }
 };
 

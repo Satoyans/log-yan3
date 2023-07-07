@@ -70,6 +70,7 @@ type signBlockPlace = {
     pos:Vec3
     playerName:string
     id:string
+    side:string
     text:string
     dimensionId:DimensionId
 }
@@ -97,5 +98,5 @@ export const queryText = {
     blockDestroy:"blockdestroy(time,playerName,blockName,blockData,x,y,z,dimension)",
     lightningHitBlock:"lightninghitBlock(time,blockName,blockData,x,y,z,dimension)",
     getElytra:"getelytra(time,playerName,x,y,z,dimension)",
-    signBlockPlace:"signblockplace(time,playerName,id,text,x,y,z,dimension)"
+    signBlockPlace:"signblockplace(time,playerName,id,side,text,x,y,z,dimension)"
 }
