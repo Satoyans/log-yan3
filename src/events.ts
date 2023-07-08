@@ -36,7 +36,7 @@ class events2emitDataClass {
     }
     deathEntities: Map<string, [number, edt.playerAttack]>
     containerData: Map<networkidentifier_1.NetworkIdentifier, BlockPos>;
-    logviewer: Map<string, ("blockcontainer" | "blockdestroy" | "blockplace" | "blockinteractedwith" | "signblockplace" | "all")>
+    logviewer: Map<string, ("blockcontainer" | "blockdestroy" | "blockplace" | "blockinteractedwith" | "signblockplace" | "all")>;
     constructor() {
         this.deathEntities = new Map();
         this.containerData = new Map();
@@ -57,8 +57,8 @@ class events2emitDataClass {
         events.blockPlace.on(ev => this.blockPlace(ev));//blockPlace
         events.blockDestroy.on(ev => this.blockDestroy(ev));//blockDestroy
         events.playerJoin.on(ev => this.playerJoin(ev));//logviewer delete
-        this.blockContainer();//blockContainer
         this.frameAttack();
+        this.blockContainer();//blockContainer
         events.packetSend(packetids_1.MinecraftPacketIds.ContainerOpen).on((pk, ni) => {//blockContainer
             if (inventory_1.ContainerType[pk.type] == undefined) return;
             this.containerData.set(ni, BlockPos.create(pk.pos));
@@ -482,10 +482,9 @@ class events2emitDataClass {
         function log(blockActor: BlockActor) {
             if (!checkLoggerEvent()) return;
             var before = blockActor.save();
-            var after;
             setTimeout((blockactor_) => {
                 const savedTag = blockactor_.save();
-                after = savedTag;
+                let after = savedTag;
                 if (before["BackText"]["Text"] !== after["BackText"]["Text"] ||
                     before["BackText"]["TextOwner"] !== after["BackText"]["TextOwner"]) {//裏面が編集された
                     let name = nt.xuToName.get(after["BackText"]["TextOwner"]);
