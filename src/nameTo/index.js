@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.xuToName = exports.nameToPlayer = exports.nameToXu = exports.niToName = exports.nameToNi = void 0;
-const event_2 = require("bdsx/event");
-const packetids_2 = require("bdsx/bds/packetids");
+const event_1 = require("bdsx/event");
+const packetids_1 = require("bdsx/bds/packetids");
 exports.nameToNi = new Map();
 exports.niToName = new Map();
 exports.nameToXu = new Map();
 exports.nameToPlayer = new Map();
 exports.xuToName = new Map();
-event_2.events.playerLeft.on((ev) => {
+event_1.events.playerLeft.on((ev) => {
     exports.xuToName.delete(ev.player.getXuid());
     exports.xuToName.delete(ev.player.getNameTag());
 });
-event_2.events.packetAfter(packetids_2.MinecraftPacketIds.Login).on((ptr, networkIdentifier, _packetId) => {
+event_1.events.packetAfter(packetids_1.MinecraftPacketIds.Login).on((ptr, networkIdentifier, _packetId) => {
     const ip = networkIdentifier.getAddress();
     const connreq = ptr.connreq;
     if (connreq === null)
@@ -24,7 +24,7 @@ event_2.events.packetAfter(packetids_2.MinecraftPacketIds.Login).on((ptr, networ
     exports.niToName.set(networkIdentifier, username);
     exports.nameToXu.set(username, xuid);
 });
-event_2.events.playerJoin.on(ev => {
+event_1.events.playerJoin.on(ev => {
     if (ev.isSimulated)
         return;
     var name = ev.player.getName();
@@ -32,7 +32,7 @@ event_2.events.playerJoin.on(ev => {
     exports.xuToName.set(ev.player.getXuid(), ev.player.getNameTag());
     exports.nameToPlayer.set(ev.player.getNameTag(), ev.player);
 });
-event_2.events.packetAfter(packetids_2.MinecraftPacketIds.Disconnect).on((_pkt, networkIdentifier, _pktId) => {
+event_1.events.packetAfter(packetids_1.MinecraftPacketIds.Disconnect).on((_pkt, networkIdentifier, _pktId) => {
     const name = exports.niToName.get(networkIdentifier);
     const player = exports.nameToPlayer.get(name);
     exports.nameToNi.delete(name);
