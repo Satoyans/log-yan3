@@ -3,7 +3,6 @@ import { ActorDamageCause, ActorType, DimensionId } from "bdsx/bds/actor";
 import * as inventory_1 from "bdsx/bds/inventory";
 import * as packetids_1 from "bdsx/bds/packetids";
 import * as player_1 from "bdsx/bds/player";
-import * as form_1 from "bdsx/bds/form";
 import * as networkidentifier_1 from "bdsx/bds/networkidentifier";
 import * as command_2 from "bdsx/bds/command";
 import { BlockPos, Vec3 } from "bdsx/bds/blockpos";
@@ -24,11 +23,11 @@ import { void_t } from "bdsx/nativetype";
 //node_modules
 import * as fs from "fs";
 import * as path from "path";
-import * as mysql from 'mysql';
 //my modules
-import { edt, sdt } from "./types";
-import { edq, sdq } from "./query_functions";
+import { edt } from "./types";
+import { edq } from "./query_functions";
 import * as nt from "./nameTo";
+import { commandLogSearchClass } from "./inMinecraftLogSearch";
 
 class events2emitDataClass {
     loggerEvent: {
@@ -518,68 +517,4 @@ class events2emitDataClass {
     }
 };
 
-class commandLogSearchClass {
-    static async logSearch(logMode: ("blockcontainer" | "blockdestroy" | "blockplace" | "blockinteractedwith" | "signblockplace" | "all"), playerName: string, pos: common_1.VectorXYZ, dimensionId: DimensionId) {
-        var logs: (sdt.blockContainer | sdt.blockInteractedWith | sdt.blockDestroy | sdt.blockPlace | sdt.signBlockPlace)[] = [];
-        if (logMode == "all") {
-            Promise.all([
-                sdq.blockPlace(pos, dimensionId),
-                sdq.blockDestroy(pos, dimensionId),
-                sdq.blockInteractedWith(pos, dimensionId),
-                sdq.blockContainer(pos, dimensionId)
-            ]).then((v) => {
-                for (let x of v) {
-                    logs = logs.concat(x);
-                }
-                let form = this.makeForm(logs, pos);
-                form.sendTo(nt.nameToNi.get(playerName)!);
-            })
-        } else {
-            switch (logMode) {
-                case "blockplace":
-                    logs = logs.concat(await sdq.blockPlace(pos, dimensionId));
-                    break;
-                case "blockdestroy":
-                    logs = logs.concat(await sdq.blockDestroy(pos, dimensionId));
-                    break;
-                case "blockinteractedwith":
-                    logs = logs.concat(await sdq.blockInteractedWith(pos, dimensionId));
-                    break;
-                case "blockcontainer":
-                    logs = logs.concat(await sdq.blockContainer(pos, dimensionId));
-                    break;
-                case "signblockplace":
-                    logs = logs.concat(await sdq.signBlockPlace(pos, dimensionId));
-                    break;
-            }
-            let form = this.makeForm(logs, pos);
-            form.sendTo(nt.nameToNi.get(playerName)!);
-        }
-    }
-    static makeForm(logs: (sdt.blockContainer | sdt.blockInteractedWith | sdt.blockDestroy | sdt.blockPlace | sdt.signBlockPlace)[], pos: common_1.VectorXYZ) {
-        var form = new form_1.SimpleForm();
-        form.setTitle(`[Log-yan] ${pos.x}/${pos.y}/${pos.z}`);
-        if (logs.length === 0) {
-            form.setTitle(`[Log-yan] No Log Data!`)
-        } else {
-            for (let data of logs.sort((a, b) => { return new Date(a.time).getTime() - new Date(b.time).getTime() })) {
-                var timedata = new Date(data.time)
-                var time = `${this.zero(timedata.getMonth() + 1)}/${this.zero(timedata.getDate())}/${this.zero(timedata.getHours())}:${this.zero(timedata.getMinutes())}:${this.zero(timedata.getSeconds())}`
-                var formText = `[${time}] ${data.logtype} §c${data.playerName}§r`;
-                if ("blockName" in data) {
-                    formText = `${formText} §5${data.blockName}§r(${data.blockData})`
-                }
-                if ("action" in data) {
-                    formText = `${formText} §2${data.action}§r ${data.type}(${data.slot}) §5${data.itemId}§r:${data.amount}`
-                }
-                form.setContent(`${form.getContent()}\n${formText}`);
-            }
-        };
-        return form;
-    };
-    static zero(num: number) {
-        return ('0' + num).slice(-2);
-    }
-
-}
 export { events2emitDataClass as LogyanMainClass }
