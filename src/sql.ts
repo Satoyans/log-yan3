@@ -1,46 +1,52 @@
 import { events } from 'bdsx/event';
 import * as mysql from 'mysql';
-import {config} from "dotenv";
+import { config } from "dotenv";
 import * as path from "path";
-config({path:path.join(__dirname,".env")});
+config({ path: path.join(__dirname, ".env") });
 
 const sql_port = process.env.SQL_PORT;
 const sql_pass = process.env.SQL_PASSWORD;
 const sql_pass_db = process.env.SQL_DATABASE;
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    port:Number(sql_port),
-    password:sql_pass,
-    database:sql_pass_db
+    port: Number(sql_port),
+    password: sql_pass,
+    database: sql_pass_db
 });
 
-function query(queryText: string, func?: any) {
+async function query(queryText: string, func?: any) {
     try {
-        //deleteOldLog();
+        let connection = await getConnection();
         connection.query(queryText, func);
     } catch (e) { console.error(e) };
 }
-function queryAsync(queryText: string):Promise<any> {
-    return new Promise((resolve, reject) => {
+function queryAsync(queryText: string): Promise<any> {
+    return new Promise(async (resolve, reject) => {
         try {
+            let connection = await getConnection();
             connection.query(queryText, (err: mysql.MysqlError | null, result: any, field: mysql.FieldInfo[] | undefined) => {
-                if (err == null) {
-                    resolve(result);
-                } else {
-                    reject(err);
-                }
+                if (err) reject(err);
+                resolve(result);
             });
         } catch (e) { console.error(e) };
     })
 }
 
-var lastDelTime = new Date().getTime();
+function getConnection(): Promise<mysql.PoolConnection> {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err, connection) => {
+            if (err) reject(err);
+            resolve(connection);
+        });
+    });
+}
 
 events.serverClose.on(() => {
-    connection.destroy();
+    pool.end
 });
 
+/*
 (function handleDisconnect() {//即時間数
     connection.connect((err: any) => {
         if (err) {
@@ -60,11 +66,7 @@ events.serverClose.on(() => {
         }
     });
 })();
-
-events.serverClose.on(() => {
-    connection.destroy();
-});
-
+*/
 
 export {
     query,
