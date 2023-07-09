@@ -120,8 +120,9 @@ V1.20.0.01で動作確認済み
 |                     | z            | `FLOAT`    |                           |
 |                     | dimension    | `TEXT`     |                           |
 
-## めも
+## memo
 
 - .envを作成する。
+  - SQL_PORT
   - SQL_PASSWORD
   - SQL_DATABASE
