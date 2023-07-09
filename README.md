@@ -31,7 +31,7 @@ V1.20.0.01で動作確認済み
 | :------------------ | :----------- | :------------------------ |
 | blockContainer      | time         |                           |
 |                     | playerName   |                           |
-|                     | type         | not `minecraft:`          |
+|                     | type         | not include `minecraft:`  |
 |                     | slot         |                           |
 |                     | action       | `add` or `remove`         |
 |                     | itemId       | `minecraft:`+itemName     |
@@ -52,7 +52,7 @@ V1.20.0.01で動作確認済み
 |                     |              |                           |
 | blockInteractedWith | time         |                           |
 |                     | playerName   |                           |
-|                     | blockName    | not `minecraft:`          |
+|                     | blockName    | not include `minecraft:`  |
 |                     | blockData    |                           |
 |                     | x            |                           |
 |                     | y            |                           |
