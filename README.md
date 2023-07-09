@@ -27,98 +27,98 @@ V1.20.0.01で動作確認済み
 
 ## 記録できるイベント | Loggable Events
 
-| table               | column       | remarkes                  |
-| :------------------ | :----------- | :------------------------ |
-| blockContainer      | time         |                           |
-|                     | playerName   |                           |
-|                     | type         | not include `minecraft:`  |
-|                     | slot         |                           |
-|                     | action       | `add` or `remove`         |
-|                     | itemId       | `minecraft:`+itemName     |
-|                     | amount       |                           |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimention    |                           |
-|                     |              |                           |
-| blockDestroy        | time         |                           |
-|                     | playerName   |                           |
-|                     | blockName    | `minecraft:`+blockId      |
-|                     | blockData    |                           |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimension    |                           |
-|                     |              |                           |
-| blockInteractedWith | time         |                           |
-|                     | playerName   |                           |
-|                     | blockName    | not include `minecraft:`  |
-|                     | blockData    |                           |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimension    |                           |
-|                     |              |                           |
-| blockPlace          | time         |                           |
-|                     | playerName   |                           |
-|                     | blockName    | `minecraft:`+blockId      |
-|                     | blockData    |                           |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimension    |                           |
-|                     |              |                           |
-| entityDie           | time         |                           |
-|                     | attackerId   | `undefined` or entityType |
-|                     | attackerName |                           |
-|                     | victimId     |                           |
-|                     | cause        |                           |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimension    |                           |
-|                     |              |                           |
-| getElytra           | time         |                           |
-|                     | playerName   |                           |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimension    |                           |
-|                     |              |                           |
-| itemThrow           | time         |                           |
-|                     | playerName   |                           |
-|                     | itemName     | `minecraft:`+itemName     |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimension    |                           |
-|                     |              |                           |
-| lightningHitBlock   | time         |                           |
-|                     | blockName    | `minecraft:`+blockId      |
-|                     | blockData    |                           |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimension    |                           |
-|                     |              |                           |
-| playerAttack        | time         |                           |
-|                     | playerName   |                           |
-|                     | victimId     |                           |
-|                     | victimName   |                           |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimension    |                           |
-|                     |              |                           |
-| signBlockPlace      | time         |                           |
-|                     | playerName   |                           |
-|                     | id           | `Sign`or`HangingSign`     |
-|                     | side         | `FrontText`or`BackText`   |
-|                     | text         |                           |
-|                     | x            |                           |
-|                     | y            |                           |
-|                     | z            |                           |
-|                     | dimension    |                           |
+| table               | column       | dataType   | remarkes                  |
+| :------------------ | :----------- | :--------- | :------------------------ |
+| blockContainer      | time         | `DATETIME` |                           |
+|                     | playerName   | `TEXT`     |                           |
+|                     | type         | `TEXT`     | not include `minecraft:`  |
+|                     | slot         | `INT`      |                           |
+|                     | action       | `TEXT`     | `add` or `remove`         |
+|                     | itemId       | `TEXT`     | `minecraft:`+itemName     |
+|                     | amount       | `INT`      |                           |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimention    | `TEXT`     |                           |
+|                     |              |            |                           |
+| blockDestroy        | time         | `DATETIME` |                           |
+|                     | playerName   | `TEXT`     |                           |
+|                     | blockName    | `TEXT`     | `minecraft:`+blockId      |
+|                     | blockData    | `TEXT`     |                           |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimension    | `TEXT`     |                           |
+|                     |              |            |                           |
+| blockInteractedWith | time         | `DATETIME` |                           |
+|                     | playerName   | `TEXT`     |                           |
+|                     | blockName    | `TEXT`     | not include `minecraft:`  |
+|                     | blockData    | `TEXT`     |                           |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimension    | `TEXT`     |                           |
+|                     |              |            |                           |
+| blockPlace          | time         | `DATETIME` |                           |
+|                     | playerName   | `TEXT`     |                           |
+|                     | blockName    | `TEXT`     | `minecraft:`+blockId      |
+|                     | blockData    | `TEXT`     |                           |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimension    | `TEXT`     |                           |
+|                     |              |            |                           |
+| entityDie           | time         | `DATETIME` |                           |
+|                     | attackerId   | `TEXT`     | `undefined` or entityType |
+|                     | attackerName | `TEXT`     |                           |
+|                     | victimId     | `TEXT`     |                           |
+|                     | cause        | `TEXT`     |                           |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimension    | `TEXT`     |                           |
+|                     |              |            |                           |
+| getElytra           | time         | `DATETIME` |                           |
+|                     | playerName   | `TEXT`     |                           |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimension    | `TEXT`     |                           |
+|                     |              |            |                           |
+| itemThrow           | time         | `DATETIME` |                           |
+|                     | playerName   | `TEXT`     |                           |
+|                     | itemName     | `TEXT`     | `minecraft:`+itemName     |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimension    | `TEXT`     |                           |
+|                     |              |            |                           |
+| lightningHitBlock   | time         | `DATETIME` |                           |
+|                     | blockName    | `TEXT`     | `minecraft:`+blockId      |
+|                     | blockData    | `TEXT`     |                           |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimension    | `TEXT`     |                           |
+|                     |              |            |                           |
+| playerAttack        | time         | `DATETIME` |                           |
+|                     | playerName   | `TEXT`     |                           |
+|                     | victimId     | `TEXT`     |                           |
+|                     | victimName   | `TEXT`     |                           |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimension    | `TEXT`     |                           |
+|                     |              |            |                           |
+| signBlockPlace      | time         | `DATETIME` |                           |
+|                     | playerName   | `TEXT`     |                           |
+|                     | id           | `TEXT`     | `Sign`or`HangingSign`     |
+|                     | side         | `TEXT`     | `FrontText`or`BackText`   |
+|                     | text         | `TEXT`     |                           |
+|                     | x            | `FLOAT`    |                           |
+|                     | y            | `FLOAT`    |                           |
+|                     | z            | `FLOAT`    |                           |
+|                     | dimension    | `TEXT`     |                           |
 
 ## めも
 
