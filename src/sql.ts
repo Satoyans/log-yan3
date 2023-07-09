@@ -46,28 +46,6 @@ events.serverClose.on(() => {
     pool.end
 });
 
-/*
-(function handleDisconnect() {//即時間数
-    connection.connect((err: any) => {
-        if (err) {
-            console.log('ERROR.CONNECTION_DB: ', err);
-            setTimeout(() => { handleDisconnect }, 1000);
-        }
-    });
-
-    //error('PROTOCOL_CONNECTION_LOST')時に再接続
-    connection.on('error', (err: { code: string; }) => {
-        console.log('ERROR.DB: ', err);
-        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-            console.log('ERROR.CONNECTION_LOST'.yellow);
-            handleDisconnect();
-        } else {
-            throw err;
-        }
-    });
-})();
-*/
-
 export {
     query,
     queryAsync
