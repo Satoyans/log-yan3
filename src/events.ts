@@ -461,8 +461,7 @@ class events2emitDataClass {
         ev.newItemStack.setCustomLore([`§0${x}.${y}.${z}§r`]);
         ev.newItemStack.startCoolDown(player);
         bedrockServer.serverInstance.nextTick().then(() => {
-            bedrockServer.executeCommand(`give ${player.getName()} firework_rocket 5`)
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§e${player.getName()}がエリトラを入手しました。§r"}]}`)
+            ev.player.sendInventory();
         })
         let emitData: edt.getElytra = {
             pos: pos,
