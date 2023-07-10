@@ -7,10 +7,10 @@ const types_1 = require("../types");
 class emitDataQueryClass {
     static playerAttack(emitData) {
         const timestamp = getTimeStamp();
-        const loc = emitData.loc;
-        const x = Math.ceil(loc.x);
-        const y = Math.ceil(loc.y);
-        const z = Math.ceil(loc.z);
+        const pos = emitData.pos;
+        const x = Math.ceil(pos.x);
+        const y = Math.ceil(pos.y);
+        const z = Math.ceil(pos.z);
         const playerName = emitData.playerName;
         const victimId = emitData.victimId;
         const victimName = emitData.victimName;
@@ -20,10 +20,10 @@ class emitDataQueryClass {
     }
     static entityDie(emitData) {
         const timestamp = getTimeStamp();
-        const loc = emitData.loc;
-        const x = Math.ceil(loc.x);
-        const y = Math.ceil(loc.y);
-        const z = Math.ceil(loc.z);
+        const pos = emitData.pos;
+        const x = Math.ceil(pos.x);
+        const y = Math.ceil(pos.y);
+        const z = Math.ceil(pos.z);
         const attackerId = emitData.attackerId;
         const attackerName = emitData.attackerName;
         const victimId = emitData.victimId;
@@ -65,10 +65,10 @@ class emitDataQueryClass {
     static itemThrow(emitData) {
         const timestamp = getTimeStamp();
         const playerName = emitData.playerName;
-        const loc = emitData.loc;
-        const x = Math.ceil(loc.x);
-        const y = Math.ceil(loc.y);
-        const z = Math.ceil(loc.z);
+        const pos = emitData.pos;
+        const x = Math.ceil(pos.x);
+        const y = Math.ceil(pos.y);
+        const z = Math.ceil(pos.z);
         const itemName = emitData.itemName;
         const dimensionId = actor_1.DimensionId[emitData.dimensionId];
         (0, sql_1.query)(`INSERT IGNORE INTO ${types_1.edt.queryText.itemThrow} ` +
@@ -114,10 +114,10 @@ class emitDataQueryClass {
     }
     static getElytra(emitData) {
         const timestamp = getTimeStamp();
-        const loc = emitData.loc;
-        const x = Math.ceil(loc.x);
-        const y = Math.ceil(loc.y);
-        const z = Math.ceil(loc.z);
+        const pos = emitData.pos;
+        const x = Math.ceil(pos.x);
+        const y = Math.ceil(pos.y);
+        const z = Math.ceil(pos.z);
         const playerName = emitData.playerName;
         const dimensionId = actor_1.DimensionId[emitData.dimensionId];
         (0, sql_1.query)(`INSERT IGNORE INTO ${types_1.edt.queryText.getElytra} ` +
