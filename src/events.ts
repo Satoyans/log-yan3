@@ -153,7 +153,7 @@ class events2emitDataClass {
     playerAttack(ev: entityEvent_1.PlayerAttackEvent) {
         if (!this.loggerEvent["playerAttack"]) return;
         let emitData: edt.playerAttack = {
-            loc: ev.victim.getPosition(),
+            pos: ev.victim.getPosition(),
             playerName: ev.player.getNameTag(),
             victimName: ev.victim.getNameTag(),
             victimId: ActorType[ev.victim.getEntityTypeId()] as keyof typeof ActorType,
@@ -175,7 +175,7 @@ class events2emitDataClass {
             if (ActorType[attacker.getEntityTypeId()] == "Player" && new Date().getTime() - time < 100) {
                 //attacked by player
                 let emitData: edt.entityDie = {
-                    loc: playerAttackData.loc,
+                    pos: playerAttackData.pos,
                     attackerName: playerAttackData.playerName,
                     attackerId: ActorType[ActorType.Player] as keyof typeof ActorType,
                     victimName: playerAttackData.victimName ? playerAttackData.victimName : "",
@@ -195,7 +195,7 @@ class events2emitDataClass {
         let attackerName = attacker?.getNameTag();
         let attackerId = attacker?.getEntityTypeId();
         let emitData: edt.entityDie = {
-            loc: pos,
+            pos: pos,
             attackerName: attackerName ? attackerName : "",
             attackerId: (typeof attackerId === "undefined") ? undefined : ActorType[attackerId] as keyof typeof ActorType,
             victimName: ev.entity.getNameTag() ? ev.entity.getNameTag() : "",
@@ -213,7 +213,7 @@ class events2emitDataClass {
         let emitData: edt.itemThrow = {
             playerName: ev.player.getName(),
             itemName: ev.itemStack.getName(),
-            loc: ev.player.getPosition(),
+            pos: ev.player.getPosition(),
             dimensionId: ev.player.getDimensionId()
         };
         edq.itemThrow(emitData);
@@ -227,7 +227,7 @@ class events2emitDataClass {
             let emitData: edt.itemThrow = {
                 playerName: ev.shooter.getNameTag(),
                 itemName: ActorType[ev.projectile.getEntityTypeId()],
-                loc: ev.shooter.getPosition(),
+                pos: ev.shooter.getPosition(),
                 dimensionId: ev.shooter.getDimensionId()
             };
             edq.itemThrow(emitData);
@@ -235,7 +235,7 @@ class events2emitDataClass {
             let emitData: edt.itemThrow = {
                 playerName: ev.shooter.getNameTag(),
                 itemName: ev.shooter.getMainhandSlot().getName(),
-                loc: ev.shooter.getPosition(),
+                pos: ev.shooter.getPosition(),
                 dimensionId: ev.shooter.getDimensionId()
             };
             edq.itemThrow(emitData);
@@ -465,7 +465,7 @@ class events2emitDataClass {
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§e${player.getName()}がエリトラを入手しました。§r"}]}`)
         })
         let emitData: edt.getElytra = {
-            loc: pos,
+            pos: pos,
             playerName: player.getName(),
             dimensionId: ev.player.getDimensionId()
         }

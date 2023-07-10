@@ -2,14 +2,14 @@
 import { ActorDamageCause, ActorType, DimensionId } from "bdsx/bds/actor"
 import { BlockPos, Vec3 } from "bdsx/bds/blockpos"
 type playerAttack = {
-    loc:Vec3
+    pos:Vec3
     playerName:string
     victimId:keyof typeof ActorType
     victimName:string
     dimensionId:DimensionId
 }
 type entityDie = {
-    loc:Vec3
+    pos:Vec3
     //Cause of death not involving an entity e.g.) fire, fall, void.
     attackerId:keyof typeof ActorType | undefined
     attackerName:string
@@ -36,7 +36,7 @@ type blockInteractedWith = {
     dimensionId:DimensionId
 }
 type itemThrow = {
-    loc:Vec3
+    pos:Vec3
     playerName:string
     itemName:string
     dimensionId:DimensionId
@@ -62,7 +62,7 @@ type lightningHitBlock = {
     dimensionId:DimensionId
 }
 type getElytra = {
-    loc:Vec3
+    pos:Vec3
     playerName:string
     dimensionId:DimensionId
 }
