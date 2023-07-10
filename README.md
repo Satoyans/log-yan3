@@ -1,16 +1,6 @@
 
 # log-yan
 
-Logging plug-in for BDSX.
-
-Stores actions in the server in SQL.
-
-This plugin was created for my server and may not be updated in the future.
-
-Confirmed operation with V1.20.0.01
-
----
-
 BDSX用のロギングプラグイン。
 
 サーバー内でのアクションをSQLに保存します。
@@ -19,11 +9,45 @@ BDSX用のロギングプラグイン。
 
 V1.20.0.01で動作確認済み
 
+---
+
+Logging plug-in for BDSX.
+
+Stores actions in the server in SQL.
+
+This plugin was created for my server and may not be updated in the future.
+
+Confirmed operation with V1.20.0.01
+
+## 使用方法 | How to use
+
+1. `src/.env`を作成する。
+1. BDSXが`src/index.js`を呼び出すようにする。
+
+---
+
+1. Create `src/.env`.
+1. Make BDSX call `src/index.js`.
+
+```env
+#.env
+SQL_PORT = 
+SQL_PASSWORD = 
+SQL_DATABASE = logyan
+```
+
 ## 使用しているシンボル | Symbols used
 
 - ?attack@ItemFrameBlock@@UEBA_NPEAVPlayer@@AEBVBlockPos@@@Z
 - ?_onItemChanged@LevelContainerModel@@MEAAXHAEBVItemStack@@0@Z
 - ?_onUpdatePacket@SignBlockActor@@MEAAXAEBVCompoundTag@@AEAVBlockSource@@@Z
+
+## 使用しているバージョン | Version used
+
+- MySQL: `v8.0.29`
+- HeidiSQL: `v12.0.0.6468`
+- BDSX: `Version: 1.20.0.01`, `Build ID: 15593650`
+- Minecraft: `v1.20.1`
 
 ## 記録できるイベント | Loggable Events
 
@@ -119,10 +143,3 @@ V1.20.0.01で動作確認済み
 |                     | y            | `FLOAT`    |                              |
 |                     | z            | `FLOAT`    |                              |
 |                     | dimension    | `TEXT`     |                              |
-
-## 使用しているバージョン | Version used
-
-- MySQL: `v8.0.29`
-- HeidiSQL: `v12.0.0.6468`
-- BDSX: `Version: 1.20.0.01`, `Build ID: 15593650`
-- Minecraft: `v1.20.1`
