@@ -31,7 +31,7 @@ import { commandLogSearchClass } from "./inMinecraftLogSearch";
 
 class events2emitDataClass {
     loggerEvent: {
-        [key:string]: Boolean
+        [key: string]: Boolean
     }
     deathEntities: Map<string, [number, edt.playerAttack]>
     containerData: Map<networkidentifier_1.NetworkIdentifier, BlockPos>;
@@ -58,10 +58,10 @@ class events2emitDataClass {
         events.playerJoin.on(ev => this.playerJoin(ev));//logviewer delete
         this.frameAttack();
         this.blockContainer();//blockContainer
-        events.packetSend(packetids_1.MinecraftPacketIds.ContainerOpen).on((pk, ni) => {//blockContainer
+        events.packetSend(packetids_1.MinecraftPacketIds.ContainerOpen).on((pk, ni) => {
             if (inventory_1.ContainerType[pk.type] == undefined) return;
             this.containerData.set(ni, BlockPos.create(pk.pos));
-        });
+        });//blockContainer
         this.signBlockPlace();//signBlockPlace
         console.log("[logyan] log-yan has been started");
     }
@@ -136,8 +136,7 @@ class events2emitDataClass {
     }
     reloadConfig() {
         let config = JSON.parse(fs.readFileSync(path.join(__dirname, "config.json")).toString());
-        let isRun = Boolean(config.isRun);
-        if (isRun) {
+        if (Boolean(config.isRun)) {
             this.loggerEvent = config.loggerEvent;
         } else {
             Object.keys(config.loggerEvent).forEach((key) => { config.loggerEvent[key] = false });
