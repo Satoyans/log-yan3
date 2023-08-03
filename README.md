@@ -7,7 +7,7 @@ BDSX用のロギングプラグイン。
 
 このプラグインは自分のサーバー用に作成したため、今後更新されない可能性があります。
 
-V1.20.0.01で動作確認済み
+V1.20.12.01で動作確認済み
 
 ---
 
@@ -17,7 +17,7 @@ Stores actions in the server in SQL.
 
 This plugin was created for my server and may not be updated in the future.
 
-Confirmed operation with V1.20.0.01
+Confirmed operation with V1.20.12.01
 
 ## 使用方法 | How to use
 
