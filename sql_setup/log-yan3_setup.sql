@@ -16,10 +16,12 @@
 
 
 -- logyan のデータベース構造をダンプしています
+DROP DATABASE IF EXISTS `logyan`;
 CREATE DATABASE IF NOT EXISTS `logyan` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `logyan`;
 
 --  テーブル logyan.blockcontainer の構造をダンプしています
+DROP TABLE IF EXISTS `blockcontainer`;
 CREATE TABLE IF NOT EXISTS `blockcontainer` (
   `time` datetime DEFAULT NULL,
   `playerName` text CHARACTER SET utf8,
@@ -37,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `blockcontainer` (
 -- エクスポートするデータが選択されていません
 
 --  テーブル logyan.blockdestroy の構造をダンプしています
+DROP TABLE IF EXISTS `blockdestroy`;
 CREATE TABLE IF NOT EXISTS `blockdestroy` (
   `time` datetime DEFAULT NULL,
   `playerName` text CHARACTER SET utf8,
@@ -51,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `blockdestroy` (
 -- エクスポートするデータが選択されていません
 
 --  テーブル logyan.blockinteractedwith の構造をダンプしています
+DROP TABLE IF EXISTS `blockinteractedwith`;
 CREATE TABLE IF NOT EXISTS `blockinteractedwith` (
   `time` datetime DEFAULT NULL,
   `playerName` text CHARACTER SET utf8,
@@ -65,6 +69,7 @@ CREATE TABLE IF NOT EXISTS `blockinteractedwith` (
 -- エクスポートするデータが選択されていません
 
 --  テーブル logyan.blockplace の構造をダンプしています
+DROP TABLE IF EXISTS `blockplace`;
 CREATE TABLE IF NOT EXISTS `blockplace` (
   `time` datetime DEFAULT NULL,
   `playerName` text CHARACTER SET utf8,
@@ -79,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `blockplace` (
 -- エクスポートするデータが選択されていません
 
 --  テーブル logyan.entitydie の構造をダンプしています
+DROP TABLE IF EXISTS `entitydie`;
 CREATE TABLE IF NOT EXISTS `entitydie` (
   `time` datetime DEFAULT NULL,
   `attackerId` text CHARACTER SET utf8,
@@ -95,6 +101,7 @@ CREATE TABLE IF NOT EXISTS `entitydie` (
 -- エクスポートするデータが選択されていません
 
 --  テーブル logyan.getelytra の構造をダンプしています
+DROP TABLE IF EXISTS `getelytra`;
 CREATE TABLE IF NOT EXISTS `getelytra` (
   `time` datetime DEFAULT NULL,
   `playerName` text CHARACTER SET utf8,
@@ -107,6 +114,7 @@ CREATE TABLE IF NOT EXISTS `getelytra` (
 -- エクスポートするデータが選択されていません
 
 --  テーブル logyan.itemthrow の構造をダンプしています
+DROP TABLE IF EXISTS `itemthrow`;
 CREATE TABLE IF NOT EXISTS `itemthrow` (
   `time` datetime DEFAULT NULL,
   `playerName` text CHARACTER SET utf8,
@@ -120,6 +128,7 @@ CREATE TABLE IF NOT EXISTS `itemthrow` (
 -- エクスポートするデータが選択されていません
 
 --  テーブル logyan.lightninghitblock の構造をダンプしています
+DROP TABLE IF EXISTS `lightninghitblock`;
 CREATE TABLE IF NOT EXISTS `lightninghitblock` (
   `time` datetime DEFAULT NULL,
   `blockName` text CHARACTER SET utf8,
@@ -133,6 +142,7 @@ CREATE TABLE IF NOT EXISTS `lightninghitblock` (
 -- エクスポートするデータが選択されていません
 
 --  テーブル logyan.playerattack の構造をダンプしています
+DROP TABLE IF EXISTS `playerattack`;
 CREATE TABLE IF NOT EXISTS `playerattack` (
   `time` datetime DEFAULT NULL,
   `playerName` text CHARACTER SET utf8,
@@ -147,6 +157,7 @@ CREATE TABLE IF NOT EXISTS `playerattack` (
 -- エクスポートするデータが選択されていません
 
 --  テーブル logyan.signblockplace の構造をダンプしています
+DROP TABLE IF EXISTS `signblockplace`;
 CREATE TABLE IF NOT EXISTS `signblockplace` (
   `time` datetime DEFAULT NULL,
   `playerName` text,
